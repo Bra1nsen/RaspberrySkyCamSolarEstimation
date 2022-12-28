@@ -23,12 +23,6 @@ url = "https://us-central1-1.gcp.cloud2.influxdata.com"
 
 client = influxdb_client.InfluxDBClient(url=url, token=token, org=org)
 
-# from preproc import preproc
-
-# https://stackoverflow.com/questions/41912594/how-to-speed-up-numpy-sum-and-python-for-loop
-# operating directory for image saving
-
-
 os.chdir("/home/pi/testenv/monster")
 
 expos_ = []
@@ -184,6 +178,8 @@ def referenceY(timestamp, images):#[1::2, 0::2] rggb unten y nach rechts x # cat
             referenceY7,
             referenceY8,
         ]
+        
+        
     except:
         pass
 
@@ -213,6 +209,8 @@ def upload_original(timestamp):
     )
 
 
+    #convert_rggb_to_rgb(images[INDEX][NUMPY_ARRAY])
+    #DELETE ONE DIMEN
 def convert_rggb_to_rgb(rggb):  # RGGB (x,y) --> RGB = (x/2,y/2,3)
 
     ret_arr = np.zeros((3, rggb.shape[0] // 2, rggb.shape[1] // 2)).astype(np.uint16)
@@ -293,16 +291,19 @@ def cap():
             
             capture_multiple_exposures(picam2, exposure_list, callback_func)                #CAPTURE 9 FRAMES RGGB12 (9,1520,2032)
             
+            images.sort(key=lambda tup: tup[0])                                             #IMAGE ARRAY IN ORDER (9,1520,2032)
+            #images_trimmed = images.trimm_onedimension
+            expos.sort(key=lambda tup: tup[0])
+            Lux_.sort(key=lambda tup: tup[0])
+            Tcam_.sort(key=lambda tup: tup[0])
+    
+            rgb = convert_rggb_to_rgb(rggb=images_trimmed) #return ret_arr  # RGB = (x/2,y/2,3)
             #################################################################
 
             metadata(digitalize(), referenceY(timestamp, images))                           #UPLOAD METADATA
             
             #################################################################
             
-            images.sort(key=lambda tup: tup[0])
-            expos.sort(key=lambda tup: tup[0])
-            Lux_.sort(key=lambda tup: tup[0])
-            Tcam_.sort(key=lambda tup: tup[0])
 
             store_original(timestamp, images)
             upload_original(timestamp)
