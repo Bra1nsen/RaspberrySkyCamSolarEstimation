@@ -288,9 +288,17 @@ def cap():
             images = images_
             expos = expos_  # real exposure times
             timestamp = int(datetime.now(timezone.utc).timestamp())
-            capture_multiple_exposures(picam2, exposure_list, callback_func)
+            
+            ##################################################################
+            
+            capture_multiple_exposures(picam2, exposure_list, callback_func)                #CAPTURE 9 FRAMES RGGB12 (9,1520,2032)
+            
+            #################################################################
 
-            metadata(digitalize(), referenceY(timestamp, images))
+            metadata(digitalize(), referenceY(timestamp, images))                           #UPLOAD METADATA
+            
+            #################################################################
+            
             images.sort(key=lambda tup: tup[0])
             expos.sort(key=lambda tup: tup[0])
             Lux_.sort(key=lambda tup: tup[0])
