@@ -1,4 +1,4 @@
-#RESIZE AND MASK
+#RESIZE AND MASKs
 import glob
 import numpy as np
 import pandas as pd
