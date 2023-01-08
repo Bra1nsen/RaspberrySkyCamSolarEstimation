@@ -45,3 +45,4 @@ with Picamera2() as picam2:
     capture_multiple_exposures(picam2, exposure_list, callback_func)
 
     picam2.stop()
+#
